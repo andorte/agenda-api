@@ -6,7 +6,6 @@ module.exports = app => {
 
     app.post('/calls', (req, res) => {
         const attendance = req.body
-        Attendance.add(attendance)
-        res.send('Attendance added')
+        Attendance.add(attendance, res)
     })
 }

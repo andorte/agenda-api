@@ -3,7 +3,7 @@ const moment = require('moment')
 const bdFormat = "YYYY-MM-DD HH:mm:ss"
 
 class Attendance {
-    add(attendance) {
+    add(attendance, res) {
         const createTime = moment().format(bdFormat)
         const date = moment(attendance.date, "DD/MM/YYYY").format(bdFormat)
         const datedAttendance = {...attendance, createTime, date}
@@ -11,9 +11,9 @@ class Attendance {
 
         connection.query(sql, datedAttendance, (error, results) => {
             if (error) {
-                console.log(error)
+                res.status(400).json(error)
             } else {
-                console.log(results)
+                res.status(201).json(results)
             }
 
         })
