@@ -1,8 +1,12 @@
+const Attendance = require('../models/attendance')
+
 module.exports = app => {
     app.get('/', (req, res) => res.send('Servidor rodando')),
     app.get('/calls', (req, res) => res.send('Atendimento')),
+
     app.post('/calls', (req, res) => {
-        console.log(req.body)
-        res.send('Atendimento (post)')
+        const attendance = req.body
+        Attendance.add(attendance)
+        res.send('Attendance added')
     })
 }
