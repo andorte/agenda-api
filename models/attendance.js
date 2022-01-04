@@ -3,32 +3,35 @@ const moment = require('moment')
 const bdFormat = "YYYY-MM-DD HH:mm:ss"
 
 class Attendance {
-    add(attendance, res) {
-        const createTime = moment().format(bdFormat)
-        const date = moment(attendance.date, "DD/MM/YYYY").format(bdFormat)
-
-        const isDateValid = moment(date).isSameOrAfter(createTime)
-        const isClientNameValid = attendance.client.length >= 5
-
-        const validations = [
+    getValidation(attendance) {
+        return [
             {
                 name: 'date',
-                valid: isDateValid,
+                valid: moment(attendance.date).isSameOrAfter(attendance.createTime),
                 message: 'Data deve ser maior ou igual a data atual'
             },
             {
                 name: 'client',
-                valid: isClientNameValid,
+                valid: attendance.client.length >= 5,
                 message: 'Cliente deve ter pelo menos cinco caracteres'
             }
         ]
+    }
 
-        const errors = validations.filter(validation => !validation.valid)
+    getValidationErrors(attendance) {
+        const validations = this.getValidation(attendance)
+        return validations.filter(validation => !validation.valid)
+    }
+
+    add(attendance, res) {
+        attendance.createTime = moment().format(bdFormat)
+        attendance.date = moment(attendance.date, "DD/MM/YYYY").format(bdFormat)
+        const errors = this.getValidationErrors(attendance)
 
         if (errors.length) {
             res.status(400).json(errors)
         } else {
-            const datedAttendance = {...attendance, createTime, date}
+            const datedAttendance = {...attendance}
             const sql = 'INSERT into Attendances SET ?'
 
             connection.query(sql, datedAttendance, (error, results) => {
