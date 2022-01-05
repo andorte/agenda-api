@@ -44,6 +44,18 @@ class Attendance {
             })
         }
     }
+
+    list(res) {
+        const sql = 'SELECT * from Attendances'
+
+        connection.query(sql, (error, results) => {
+            if (error) {
+                res.status(400).json(error)
+            } else {
+                res.status(200).json(results)
+            }
+        })
+    }
 }
 
 module.exports = new Attendance
