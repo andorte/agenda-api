@@ -22,4 +22,8 @@ module.exports = app => {
             req.body,
             res)
     })
+
+    app.delete('/calls/:id', (req, res) => {
+        Attendance.delete(parseInt(req.params.id), res)
+    })
 }
