@@ -15,4 +15,11 @@ module.exports = app => {
         const attendance = req.body
         Attendance.add(attendance, res)
     })
+
+    app.patch('/calls/:id', (req, res) => {
+        Attendance.update(
+            parseInt(req.params.id),
+            req.body,
+            res)
+    })
 }
