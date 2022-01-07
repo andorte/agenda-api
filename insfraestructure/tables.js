@@ -2,6 +2,7 @@ class Tables {
     init(connection) {
         this.connection = connection
         this.createAttendances()
+        this.createPets()
     }
 
     createAttendances() {
@@ -25,6 +26,23 @@ class Tables {
                 console.log(error)
             } else {
                 console.log("Attendance table created")
+            }
+        })
+    }
+
+    createPets() {
+        const sql = `CREATE TABLE IF NOT EXISTS Pets (
+            id int NOT NULL AUTO_INCREMENT,
+            name varchar(50) NOT NULL,
+            image varchar(200) NOT NULL,
+            PRIMARY KEY(id)
+        )`
+
+        this.connection.query(sql, (error) => {
+            if (error) {
+                console.log(error)
+            } else {
+                console.log("Pets table created")
             }
 
         })

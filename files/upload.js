@@ -1,7 +1,11 @@
 const fs = require('fs')
 
-fs.createReadStream('./assets/inuki.jpg').pipe(
-    fs.createWriteStream('./assets/inuki2.jpg')
-).on('finish', () => {
-    console.log("Imagem escrita com sucesso")
-})
+module.exports = (path, fileName, createdImageCallback) => {
+    const newPath = `./assets/images/${fileName}`
+
+    fs.createReadStream(path).pipe(
+        fs.createWriteStream(newPath)
+    ).on('finish', () => {
+        createdImageCallback(newPath)
+    })
+}
