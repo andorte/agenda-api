@@ -1,5 +1,6 @@
 const connection = require('../insfraestructure/connection')
 const moment = require('moment')
+const axios = require('axios')
 const bdFormat = "YYYY-MM-DD HH:mm:ss"
 
 class Attendance {
@@ -59,11 +60,15 @@ class Attendance {
     get(id, res) {
         const sql = 'SELECT * from Attendances where id=?'
 
-        connection.query(sql, id, (error, results) => {
+        connection.query(sql, id, async (error, results) => {
+            const attendance = results[0]
+            const cpf = attendance.client
             if (error) {
                 res.status(400).json(error)
             } else {
-                res.status(200).json(results[0])
+                const { data } = await axios.get(`http://localhost:8082/${cpf}`)
+                attendance.client = data
+                res.status(200).json(attendance)
             }
         })
     }

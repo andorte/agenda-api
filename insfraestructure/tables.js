@@ -11,7 +11,7 @@ class Tables {
         //     ADD createTime datetime NOT NULL DEFAULT '1970-01-02'`
         const sql = `CREATE TABLE IF NOT EXISTS Attendances (
             id int NOT NULL AUTO_INCREMENT,
-            client varchar(50) NOT NULL,
+            client varchar(11) NOT NULL,
             pet varchar(20),
             service varchar(20) NOT NULL,
             date datetime NOT NULL,
