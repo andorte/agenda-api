@@ -1,4 +1,4 @@
-const connection = require('../insfraestructure/connection')
+const connection = require('../insfraestructure/database/connection')
 const moment = require('moment')
 const axios = require('axios')
 const bdFormat = "YYYY-MM-DD HH:mm:ss"
