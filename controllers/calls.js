@@ -4,7 +4,9 @@ module.exports = app => {
     app.get('/', (req, res) => res.send('Servidor rodando')),
 
     app.get('/calls', (req, res) => {
-        Attendance.list(res)
+        Attendance.list()
+            .then(results => res.json(results))
+            .catch(error => res.status(400).json(error))
     }),
 
     app.get('/calls/:id', (req, res) => {
