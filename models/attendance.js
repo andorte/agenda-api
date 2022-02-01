@@ -1,4 +1,5 @@
 const connection = require('../insfraestructure/database/connection')
+const repository = require('../repository/attendance')
 const moment = require('moment')
 const axios = require('axios')
 const bdFormat = "YYYY-MM-DD HH:mm:ss"
@@ -24,24 +25,22 @@ class Attendance {
         return validations.filter(validation => !validation.valid)
     }
 
-    add(attendance, res) {
+    add(attendance) {
         attendance.createTime = moment().format(bdFormat)
         attendance.date = moment(attendance.date, "DD/MM/YYYY").format(bdFormat)
         const errors = this.getValidationErrors(attendance)
 
         if (errors.length) {
-            res.status(400).json(errors)
+            return new Promise((resolve, reject) => reject(errors))
         } else {
             const datedAttendance = {...attendance}
-            const sql = 'INSERT into Attendances SET ?'
-
-            connection.query(sql, datedAttendance, (error, results) => {
-                if (error) {
-                    res.status(400).json(error)
-                } else {
-                    res.status(201).json(attendance)
-                }
-            })
+            return repository.add(datedAttendance)
+                .then(
+                    results => {
+                        const id = results.insertId
+                        return {...attendance, id}
+                    }
+                )
         }
     }
 

@@ -13,7 +13,9 @@ module.exports = app => {
 
     app.post('/calls', (req, res) => {
         const attendance = req.body
-        Attendance.add(attendance, res)
+        Attendance.add(attendance)
+            .then(attendance => res.status(201).json(attendance))
+            .catch(error => res.status(400).json(error))
     })
 
     app.patch('/calls/:id', (req, res) => {
